@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OFF.WRIST — Product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+<div class="announcement">
+  <div class="announcement-track">
+    <span>OFF THE POCKET. ON YOUR WRIST.</span>
+    <span>FREE SHIPPING OVER $150</span>
+    <span>DESIGNED FOR COLLECTORS. MADE FOR THE CULTURE.</span>
+    <span>OFF THE POCKET. ON YOUR WRIST.</span>
+    <span>FREE SHIPPING OVER $150</span>
+    <span>DESIGNED FOR COLLECTORS. MADE FOR THE CULTURE.</span>
+  </div>
+</div>
+
+<header class="header">
+  <div class="header-inner">
+    <nav class="nav-left">
+      <a href="./index.html">SHOP ALL</a>
+      <a href="./index.html#about">ABOUT</a>
+    </nav>
+    <a href="./index.html" class="logo">OFF.WRIST</a>
+    <nav class="nav-right">
+      <button class="link-btn" id="searchBtn" aria-label="Search">SEARCH</button>
+      <button class="cart-btn" id="cartBtn" aria-label="Cart">
+        BAG (<span id="cartCount">0</span>)
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main class="pdp" id="pdp">
+  <p class="pdp-loading">Loading…</p>
+</main>
+
+<footer class="footer">
+  <div class="footer-cols">
+    <div>
+      <h5>HELP</h5>
+      <a href="#">Contact</a><a href="#">Shipping</a><a href="#">Returns</a><a href="#">FAQ</a>
+    </div>
+    <div>
+      <h5>SHOP</h5>
+      <a href="./index.html#cases">Conversion Cases</a><a href="./index.html#straps">Straps</a><a href="./index.html">New In</a>
+    </div>
+    <div>
+      <h5>COMPANY</h5>
+      <a href="./index.html#about">About</a><a href="#">Press</a><a href="#">Wholesale</a>
+    </div>
+    <div>
+      <h5>FOLLOW</h5>
+      <a href="#">Instagram</a><a href="#">TikTok</a><a href="#">X / Twitter</a>
+    </div>
+    <div class="newsletter">
+      <h5>JOIN THE LIST</h5>
+      <p>Early access to drops and collector-only releases.</p>
+      <form onsubmit="event.preventDefault(); alert('Wire this to Supabase later.');">
+        <input type="email" placeholder="EMAIL" required />
+        <button type="submit">→</button>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span id="year"></span> OFF.WRIST. All rights reserved.</span>
+    <span>OFF.WRIST is an independent aftermarket accessories brand. Not affiliated with or endorsed by any luxury watchmaker.</span>
+  </div>
+</footer>
+
+<div class="search-overlay" id="searchOverlay" aria-hidden="true">
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="SEARCH BY COLOR — TRY 'BLUE', 'GREEN', 'RED'…" autocomplete="off" />
+    <button class="search-close" id="searchClose" aria-label="Close search">×</button>
+  </div>
+  <div class="search-results" id="searchResults"></div>
+</div>
+
+<aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+  <div class="cart-head">
+    <h3>YOUR BAG</h3>
+    <button id="cartClose" aria-label="Close cart">×</button>
+  </div>
+  <div id="cartItems" class="cart-items"><p class="cart-empty">Your bag is empty.</p></div>
+  <div class="cart-foot">
+    <div class="cart-total"><span>SUBTOTAL</span><span id="cartTotal">$0.00</span></div>
+    <button id="checkoutBtn" class="btn btn-primary btn-full" disabled>CHECKOUT</button>
+    <p class="cart-note">Secure checkout powered by Stripe.</p>
+  </div>
+</aside>
+<div class="cart-backdrop" id="cartBackdrop"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>

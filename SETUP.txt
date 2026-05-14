@@ -1,0 +1,39 @@
+OFF.WRIST — Setup notes
+
+LOCAL DEV
+  cd ~/off-wrist
+  python3 -m http.server 5500
+  open http://localhost:5500
+
+  (Out of the box it shows sample products so you can see the layout.
+   Wire up Supabase + Stripe below to make it real.)
+
+SUPABASE
+  1) Create a project at supabase.com.
+  2) SQL editor → paste supabase-schema.sql → Run.
+  3) Storage → New bucket "product-images", set Public ON.
+  4) Upload your product photos. Copy each public URL.
+  5) Insert rows into "products" with name, slug, price_cents, color, image_url, stripe_payment_link.
+  6) Project Settings → API → copy the Project URL and anon public key
+     into config.js (SUPABASE_URL, SUPABASE_ANON_KEY).
+
+STRIPE
+  Simplest flow (no backend needed):
+  1) Stripe Dashboard → Payment Links → New.
+  2) Create one Payment Link per product (or per variant). Copy the URL.
+  3) Paste that URL into the product row's stripe_payment_link column.
+  4) Done — the storefront opens it on checkout.
+
+  Optional upgrade for multi-item carts: add a /api/checkout serverless function
+  that calls stripe.checkout.sessions.create({ line_items, mode: 'payment' }).
+
+DEPLOY
+  Easiest: push this folder to GitHub → import in Vercel → deploy.
+  (Same flow you used for drip-apparel.)
+
+FILES
+  index.html          page layout (Mejuri-style structure, OFF.WRIST skin)
+  styles.css          dark-mode minimal-luxury / streetwear styling
+  app.js              product loading, cart, Stripe Payment Link checkout
+  config.js           your Supabase + Stripe keys (do NOT commit real keys)
+  supabase-schema.sql products table + RLS policy
