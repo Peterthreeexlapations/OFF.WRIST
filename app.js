@@ -326,19 +326,25 @@
     `;
   }
 
-  // -- Checkout (Square via /api/checkout-square) --
-  // Frontend sends slugs only; the function looks up prices in Supabase server-side.
+  // -- Checkout (Stripe Checkout Session via /api/checkout) --
   async function checkout() {
     if (!cart.length) return;
-    const items = cart.map((line) => {
+    const items = [];
+    const missing = [];
+    cart.forEach((line) => {
       const p = productsById[line.id];
-      return p ? { slug: p.slug, qty: line.qty } : null;
-    }).filter(Boolean);
-    if (!items.length) return;
+      if (!p) return;
+      if (!p.stripe_price_id) missing.push(p.name);
+      else items.push({ price_id: p.stripe_price_id, qty: line.qty });
+    });
+    if (missing.length) {
+      alert('These items have no Stripe price yet:\n\n' + missing.join('\n'));
+      return;
+    }
     const btn = document.getElementById('checkoutBtn');
     if (btn) { btn.disabled = true; btn.textContent = 'OPENING CHECKOUT…'; }
     try {
-      const res = await fetch('/api/checkout-square', {
+      const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items }),
