@@ -2,12 +2,20 @@
 // POST /api/checkout  { items: [{ price_id, qty }] }  → { url }
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const sk = process.env.STRIPE_SECRET_KEY;
+const stripe = new Stripe(sk, {
+  maxNetworkRetries: 0,
+  timeout: 8000,
+});
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  if (!sk) {
+    return res.status(500).json({ error: 'STRIPE_SECRET_KEY env var is missing on Vercel' });
   }
 
   try {
@@ -38,7 +46,19 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ url: session.url });
   } catch (err) {
-    console.error('Checkout error:', err);
-    return res.status(500).json({ error: err.message || 'Checkout failed' });
+    console.error('Checkout error:', {
+      name: err?.name,
+      type: err?.type,
+      code: err?.code,
+      statusCode: err?.statusCode,
+      message: err?.message,
+      param: err?.param,
+    });
+    return res.status(500).json({
+      error: err?.message || 'Checkout failed',
+      type: err?.type,
+      code: err?.code,
+      statusCode: err?.statusCode,
+    });
   }
 }
